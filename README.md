@@ -61,7 +61,8 @@ sudo nano /docker/letsencrypt-docker-nginx/src/letsencrypt/letsencrypt-site/inde
 ```
 
 cd /docker/letsencrypt-docker-nginx/src/letsencrypt
-sudo docker-compose up -d
+
+`sudo docker-compose up -d`
 
 ```markdown
 sudo docker run -it --rm \
@@ -85,4 +86,19 @@ certbot/certbot \
 --staging \
 certificates
 ```
+clean up staging artifacts:
 
+`sudo rm -rf /docker-volumes/`
+
+```markdown
+sudo docker run -it --rm \
+-v /docker-volumes/etc/letsencrypt:/etc/letsencrypt \
+-v /docker-volumes/var/lib/letsencrypt:/var/lib/letsencrypt \
+-v /docker/letsencrypt-docker-nginx/src/letsencrypt/letsencrypt-site:/data/letsencrypt \
+-v "/docker-volumes/var/log/letsencrypt:/var/log/letsencrypt" \
+certbot/certbot \
+certonly --webroot \
+--email khawarhere@gmail.com --agree-tos --no-eff-email \
+--webroot-path=/data/letsencrypt \
+-d rasauth.scaleablecloud.com -d www.rasauth.scaleablecloud.com
+```
